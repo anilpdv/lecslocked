@@ -17,8 +17,15 @@ func contact(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>where there is will , there is a way")
 }
 
+func notFound(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprint(w, "<h1>Sorry, but we couldn't find the page you searching path ", r.URL.Path)
+}
+
 func main() {
 	router := mux.NewRouter()
+	router.NotFoundHandler = http.HandlerFunc(notFound)
 	router.HandleFunc("/", home)
 	router.HandleFunc("/contact", contact)
 	http.ListenAndServe(":3000", router)
