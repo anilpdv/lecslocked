@@ -3,20 +3,23 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func handleFunc(w http.ResponseWriter, r *http.Request) {
+func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if r.URL.Path == "/" {
-		fmt.Fprint(w, "<h1>This is root page </h1>")
-	} else if r.URL.Path == "/contact" {
-		fmt.Fprint(w, "<h1>This is contanct page</h1>")
-	} else {
-		fmt.Fprint(w, "<h1>page not found</h1> ", "url path is not found ", r.URL.Path)
-	}
+	fmt.Fprint(w, "<h1>welcome to home</h1>")
+}
+
+func contact(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, "<h1>where there is will , there is a way")
 }
 
 func main() {
-	http.HandleFunc("/", handleFunc)
-	http.ListenAndServe(":3000", nil)
+	router := mux.NewRouter()
+	router.HandleFunc("/", home)
+	router.HandleFunc("/contact", contact)
+	http.ListenAndServe(":3000", router)
 }
