@@ -20,7 +20,7 @@ func contact(w http.ResponseWriter, r *http.Request) {
 func notFound(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprint(w, "<h1>Sorry, but we couldn't find the page you searching path ", r.URL.Path)
+	fmt.Fprint(w, "<h1>Sorry, but we couldn't find the page you "+r.URL.Path+"searching path</h1> ")
 }
 
 func main() {
