@@ -9,17 +9,21 @@ import (
 )
 
 var homeTemplate *template.Template
+var contactTemplate *template.Template
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := homeTemplate.Execute(w, nil); err != nil {
+	err := homeTemplate.Execute(w, nil)
+	if err != nil {
 		panic(err)
 	}
 }
 
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, "<h1>where there is will , there is a way")
+	if err := contactTemplate.Execute(w, nil); err != nil {
+		panic(err)
+	}
 }
 
 func notFound(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +38,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	contactTemplate, err = template.ParseFiles("views/contact.gohtml")
+	if err != nil {
+		panic(err)
+	}
+
 	router := mux.NewRouter()
 	router.NotFoundHandler = http.HandlerFunc(notFound)
 	router.HandleFunc("/", home)
